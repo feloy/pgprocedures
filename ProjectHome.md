@@ -1,0 +1,1 @@
+This class can be used to easily call PostgreSQL stored procedures from your PHP code.
