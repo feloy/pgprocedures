@@ -14,7 +14,7 @@ if (strpos($cmd, '@')) {
 }
 
 $debug = false;
-//echo $schema.' - '.$function."\n";
+
 $ret = $base->get_arguments ($schema, $function);
 $all = false;
 if (count ($ret)) {

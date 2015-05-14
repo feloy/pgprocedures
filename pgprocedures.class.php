@@ -270,6 +270,8 @@ class PgSchema {
     $nargs = count ($args);
 
     $query = "SELECT * FROM pgprocedures.search_function ('".$this->name."', '$method', $nargs)";
+    
+    $rettypename = null;
 
     if ($res = $this->pgproc_query ($query)) {
       if ($row = pg_fetch_array ($res)) {
@@ -470,7 +472,7 @@ class PgSchema {
     return $sqlvalue;
   }
 
-  private function get_pgtype ($oid) {
+  public function get_pgtype ($oid) {
     if (isset ($this->pgtypes[$oid]))
       return $this->pgtypes[$oid];
     else {
@@ -608,13 +610,13 @@ class PgProcedures {
     $this->pgproc_query ('ROLLBACK');    
   }
 
-  public function get_arguments ($function_name) {
-    $rets = $this->pgprocedures->search_arguments ($function_name);
+  public function get_arguments ($schema_name, $function_name) {
+    $rets = $this->pgprocedures->search_arguments ($schema_name, $function_name);
     if (count ($rets)) {
       foreach ($rets as &$ret) {
 	if (count ($ret['argtypes'])) {
 	  foreach ($ret['argtypes'] as &$argtype) {	  
-	    $argtype = $this->get_pgtype ($argtype);
+	    $argtype = $this->pgprocedures->get_pgtype ($argtype);
 	  }
 	}
       }
