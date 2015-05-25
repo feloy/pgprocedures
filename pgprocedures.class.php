@@ -422,7 +422,7 @@ class PgSchema {
       if ($value === null)
 	$sqlvalue = 'null';
       else
-	$sqlvalue = "'".pg_escape_string ($this->handler, $value)."'";
+	$sqlvalue = "'".pg_escape_string ($this->base->handler, $value)."'";
       break;
 
     case 'bool':
@@ -467,7 +467,7 @@ class PgSchema {
       if ($value === null)
 	$sqlvalue = 'null';
       else
-	$sqlvalue = "'".pg_escape_string ($this->handler, $value)."'";
+	$sqlvalue = "'".pg_escape_string ($this->base->handler, $value)."'";
     }
     return $sqlvalue;
   }
@@ -488,14 +488,14 @@ class PgSchema {
 
   private function pgproc_query ($q) {
     try {
-      return pg_query ($this->handler, $q);
+      return pg_query ($this->base->handler, $q);
     } catch (Exception $e) {
-      throw new PgProcException (pg_last_error($this->handler));
+      throw new PgProcException (pg_last_error($this->base->handler));
     }      
   }
 }
 
-class PgProcedures {
+class PgProcedures2 {
 
   // PG connection parameters
   private $server;
@@ -504,7 +504,7 @@ class PgProcedures {
   private $db;
   private $port;
 
-  private $handler; // PG connection handler
+  public $handler; // PG connection handler
 
   private $pgtypes; // Store already read pg_types 
 
