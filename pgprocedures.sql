@@ -1,3 +1,4 @@
+BEGIN TRANSACTION;
 --  Copyright © 2014 ELOL
 --    Written by Philippe Martin (contact@elol.fr)
 -- --------------------------------------------------------------------------------
@@ -76,3 +77,5 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql;
+
+COMMIT;

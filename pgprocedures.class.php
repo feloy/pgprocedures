@@ -422,7 +422,7 @@ class PgSchema {
       if ($value === null)
 	$sqlvalue = 'null';
       else
-	$sqlvalue = "'".pg_escape_string ($value)."'";
+	$sqlvalue = "'".pg_escape_string ($this->handler, $value)."'";
       break;
 
     case 'bool':
@@ -467,7 +467,7 @@ class PgSchema {
       if ($value === null)
 	$sqlvalue = 'null';
       else
-	$sqlvalue = "'".pg_escape_string ($value)."'";
+	$sqlvalue = "'".pg_escape_string ($this->handler, $value)."'";
     }
     return $sqlvalue;
   }
@@ -488,9 +488,9 @@ class PgSchema {
 
   private function pgproc_query ($q) {
     try {
-      return pg_query ($q);
+      return pg_query ($this->handler, $q);
     } catch (Exception $e) {
-      throw new PgProcException (pg_last_error());
+      throw new PgProcException (pg_last_error($this->handler));
     }      
   }
 }
@@ -650,9 +650,9 @@ class PgProcedures {
 
   private function pgproc_query ($q) {
     try {
-      return pg_query ($q);
+      return pg_query ($this->handler, $q);
     } catch (Exception $e) {
-      throw new PgProcException (pg_last_error());
+      throw new PgProcException (pg_last_error($this->handler));
     }      
   }
 }
