@@ -390,8 +390,8 @@ class PgSchema {
     if (substr ($type, 0, 1) == '_' && is_array ($value)) {
       $sqlvalue = 'ARRAY[';
       foreach ($value as $subvalue) {
-	$sqlvalue .= $this->escape_value (substr ($type, 1), $subvalue) . ", "; // TODO replace , by pg_type.typdelim
-      }
+	$sqlvalue .= $this->escape_value (substr ($type, 1), $subvalue) . '::' . substr($type, 1) . ", "; // TODO replace , by pg_type.typdelim
+      }      
       if (count ($value) > 0)     
 	$sqlvalue = substr ($sqlvalue, 0, -2);
       $sqlvalue .= ']';
@@ -401,7 +401,7 @@ class PgSchema {
     case 'int2':
     case 'int4':
     case 'int8':
-      if ($value === '')
+      if ($value === null)
 	$sqlvalue = 'null';
       else
 	$sqlvalue = intval ($value);
@@ -410,7 +410,7 @@ class PgSchema {
     case 'numeric':
     case 'float4':
     case 'float8':
-      if ($value == '')
+      if ($value === null)
 	$sqlvalue = 'null';
       else
 	$sqlvalue = floatval ($value);
@@ -419,7 +419,7 @@ class PgSchema {
     case 'text':
     case 'varchar':
     case 'bpchar':
-      if ($value == '')
+      if ($value === null)
 	$sqlvalue = 'null';
       else
 	$sqlvalue = "'".pg_escape_string ($value)."'";
@@ -464,7 +464,7 @@ class PgSchema {
       break;
 
     default:
-      if ($value == '')
+      if ($value === null)
 	$sqlvalue = 'null';
       else
 	$sqlvalue = "'".pg_escape_string ($value)."'";
