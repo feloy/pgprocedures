@@ -1,0 +1,5 @@
+<?php
+$pg_host = 'localhost';
+$pg_user = 'myuser';
+$pg_pass = 'mypass';
+$pg_database = 'mydatabase';
