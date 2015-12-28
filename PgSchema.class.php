@@ -85,7 +85,7 @@ class PgSchema {
       if ($count)  {
 	if ($res = $this->pgproc_query ($query)) { 
 	  $row = pg_fetch_array ($res);
-	  return $row['count'];
+	  return intval($row['count']);
 	}
 
       } else if (is_array ($rettype)) { // Composite type
@@ -223,13 +223,19 @@ class PgSchema {
     case 'int2':
     case 'int4':
     case 'int8':
-    case 'numeric':
+      return intval($value);
+      break;	  
+
     case 'text':
     case 'varchar':
     case 'bpchar':
+      return $value;
+      break;	  
+
     case 'float4':
     case 'float8':
-      return $value;
+    case 'numeric':
+      return floatval($value);
       break;	  
       
     case 'interval':
@@ -258,7 +264,7 @@ class PgSchema {
       break;
       
     case 'time';
-    case'timetz':
+    case 'timetz':
       if (strlen ($value)) {
 	$timestamp = strtotime ($value);
 	return date ($this->base->time_return_format, $timestamp);
@@ -353,7 +359,7 @@ class PgSchema {
       break;
 
     case 'time';
-    case'timetz':
+    case 'timetz':
       $parts = strptime ($value, $this->base->time_arg_format);
       if ($parts) {
 	$timestamp = mktime($parts['tm_hour'], $parts['tm_min'], $parts['tm_sec']);

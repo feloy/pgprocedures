@@ -77,9 +77,9 @@ This class can be used to easily call PostgreSQL stored procedures from your PHP
   // you have to use the formats '%d/%m/%Y' and '%H:%M:%S'
   // (see the documentation for the PHP __ strftime __ function for more information about this format).
   // You can change these formats with the following functions: 
-  $base->set_timestamp_arg_format ('%Y-%m-%d %I:%M:%S %p');
+  $base->set_timestamp_arg_format ('%Y-%m-%d %H:%M:%S %p');
   $base->set_date_arg_format ('%Y-%m-%d');
-  $base->set_time_arg_format ('%I:%M:%S %p');
+  $base->set_time_arg_format ('%H:%M:%S %p');
 
   // You can get the character set used in the database to store the text with the following function:
   $base->get_client_encoding ();
