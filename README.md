@@ -12,11 +12,11 @@ This class can be used to easily call PostgreSQL stored procedures from your PHP
 ```php
 <?php
   // Include this file
-  require_once 'pgprocedures.class.php';
+  require_once 'pgprocedures.php';
 ```
 ```php
   // Instanciate the class with the arguments necessary to connect to the database
-  $base = new PgProcedures ($pg_host, $pg_user, $pg_pass, $pg_database);
+  $base = new PgProcedures2 ($pg_host, $pg_user, $pg_pass, $pg_database);
 ```
 ```php
   // Call a stored procedure: just use the name of the stored procedure itself, 

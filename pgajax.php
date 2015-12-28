@@ -1,7 +1,7 @@
 <?php
-require 'pgprocedures.class.php';
-require_once ('dbconfig.inc.php');
-$base = new PgProcedures ($pghost, $pguser, $pgpass, $pgbase);
+require 'pgprocedures.php';
+require_once ('config.inc.php');
+$base = new PgProcedures2 ($pg_host, $pg_user, $pg_pass, $pg_database);
 
 $cmd = $_SERVER['PHP_SELF'];
 $cmd = basename ($cmd, '.php');
