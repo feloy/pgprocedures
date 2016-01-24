@@ -72,7 +72,7 @@ describe("PgProc", function() {
 	    .catch(error => console.log('Request failed', error));
     });
 
-    it("returns composite", function(done) {
+    it("returns setof composite", function(done) {
 	fetch('/pgajax/tests@test_returns_setof_composite.php')
 	    .then(statusOk)
 	    .then(getJson)
@@ -84,7 +84,7 @@ describe("PgProc", function() {
 	    });
     });
 
-    it("returns composite", function(done) {
+    it("not found exception", function(done) {
 	fetch('/pgajax/tests@not_found_function.php')
 	    .then(statusOk)
 	    .then(getJson)
@@ -98,7 +98,7 @@ describe("PgProc", function() {
 	    });
 	});
 
-    it("returns composite", function(done) {
+    it("raised exception", function(done) {
 	fetch('/pgajax/tests@function_raising_exception.php')
 	    .then(statusOk)
 	    .then(getJson)
