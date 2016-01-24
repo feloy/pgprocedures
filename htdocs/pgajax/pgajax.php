@@ -1,6 +1,6 @@
 <?php
-require 'pgprocedures.php';
-require_once ('config.inc.php');
+require '../../pgprocedures.php';
+require_once ('../../config.inc.php');
 $base = new PgProcedures2 ($pg_host, $pg_user, $pg_pass, $pg_database);
 
 $cmd = $_SERVER['PHP_SELF'];
@@ -43,8 +43,23 @@ if ($all) {
   foreach ($r['argnames'] as $argname) {
     $args[] = get_magic_quotes_gpc() ? stripslashes($_REQUEST[$argname]) : $_REQUEST[$argname];
   }
- }
-$results = $base->$schema->__call ($function, $args);
+}
+
+try {
+  $results = $base->$schema->__call ($function, $args);
+} catch (PgProcFunctionNotAvailableException $e) {
+  header($_SERVER["SERVER_PROTOCOL"]." 404 PgProc Function Not Available"); 
+  echo '1';
+  exit;
+} catch (PgProcException $e) {
+  header($_SERVER["SERVER_PROTOCOL"]." 400 PgProc exception"); 
+  echo '2';
+  exit;
+} catch (Exception $e) {
+  header($_SERVER["SERVER_PROTOCOL"]." 400 Exception"); 
+  echo '3';
+  exit;
+}
 
 header ('Content-Type: application/json ; charset=utf-8');
 header ('Cache-Control: no-cache , private');

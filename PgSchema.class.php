@@ -394,7 +394,10 @@ class PgSchema {
 
   private function pgproc_query ($q) {
     try {
-      return pg_query ($this->base->handler, $q);
+      $ret = pg_query ($this->base->handler, $q);
+      if ($ret === false)
+      	throw new PgProcException (pg_last_error($this->base->handler));
+      return $ret;
     } catch (Exception $e) {
       throw new PgProcException (pg_last_error($this->base->handler));
     }      

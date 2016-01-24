@@ -154,9 +154,12 @@ class PgProcedures2 {
 
   private function pgproc_query ($q) {
     try {
-      return pg_query ($this->handler, $q);
+      $ret = pg_query ($this->handler, $q);
+      if ($ret === false)
+      	throw new PgProcException (pg_last_error($this->base->handler));
+      return $ret;
     } catch (Exception $e) {
       throw new PgProcException (pg_last_error($this->handler));
-    }      
+    }
   }
 }
