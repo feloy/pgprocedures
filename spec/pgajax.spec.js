@@ -1,40 +1,7 @@
-/* Personalized errors */
-function PgProcFunctionNotAvailableError(message) {
-    this.message = message || "PgProc function not available";
-}
-PgProcFunctionNotAvailableError.prototype = Object.create(Error.prototype);
-PgProcFunctionNotAvailableError.prototype.constructor = PgProcFunctionNotAvailableError;
-
-
-function PgProcError(message) {
-    this.message = message || "PgProc error";
-}
-PgProcError.prototype = Object.create(Error.prototype);
-PgProcError.prototype.constructor = PgProcError;
-
-/* Fetch utilities */
-function statusOk(response) {  
-  if (response.status >= 200 && response.status < 300) {  
-    return Promise.resolve(response)  
-  } else if (response.status == 404) {
-    return Promise.reject(new PgProcFunctionNotAvailableError(response.statusText))
-  } else if (response.status == 400) {
-    return Promise.reject(new PgProcError(response.statusText))
-  } else {  
-    return Promise.reject(new Error(response.statusText))  
-  }  
-}
-
-function getJson(response) {  
-  return response.json()  
-}
-
 /* TESTS */
 describe("PgProc", function() {
     it("returns integer", function(done) {
-	fetch('/pgajax/tests@test_returns_integer.php')
-	    .then(statusOk)
-	    .then(getJson)
+	PgProc('tests', 'test_returns_integer')
 	    .then(data => {		
 		expect(data).toBe(42);
 		done();
@@ -42,9 +9,7 @@ describe("PgProc", function() {
     });
 
     it("returns integer as string", function(done) {
-	fetch('/pgajax/tests@test_returns_integer_as_string.php')
-	    .then(statusOk)
-	    .then(getJson)
+	PgProc('tests', 'test_returns_integer_as_string')
 	    .then(data => {
 		expect(data).toBe('42');
 		done();
@@ -52,9 +17,7 @@ describe("PgProc", function() {
     });
 
     it("returns date", function(done) {
-	fetch('/pgajax/tests@test_returns_date.php')
-	    .then(statusOk)
-	    .then(getJson)
+	PgProc('tests', 'test_returns_date')
 	    .then(data => {
 		expect(data).toMatch(/^\d{2}\/\d{2}\/\d{4}$/);
 		done();
@@ -62,9 +25,7 @@ describe("PgProc", function() {
     });
 
     it("returns composite", function(done) {
-	fetch('/pgajax/tests@test_returns_composite.php')
-	    .then(statusOk)
-	    .then(getJson)
+	PgProc('tests', 'test_returns_composite')
 	    .then(elt => {
 		expect(elt).toEqual({a: 1, b: "hello"});
 		done();
@@ -73,9 +34,7 @@ describe("PgProc", function() {
     });
 
     it("returns setof composite", function(done) {
-	fetch('/pgajax/tests@test_returns_setof_composite.php')
-	    .then(statusOk)
-	    .then(getJson)
+	PgProc('tests', 'test_returns_setof_composite')
 	    .then(function(data) {
 		expect(data).toEqual([{a: 1, b: 'hello'}, {a: 2, b: 'bye'}]);
 		done();
@@ -85,9 +44,7 @@ describe("PgProc", function() {
     });
 
     it("not found exception", function(done) {
-	fetch('/pgajax/tests@not_found_function.php')
-	    .then(statusOk)
-	    .then(getJson)
+	PgProc('tests', 'not_found_function')
 	    .then(elt => console.log(elt))
 	    .catch(error => {
 		if (error instanceof PgProcFunctionNotAvailableError) {
@@ -99,9 +56,7 @@ describe("PgProc", function() {
 	});
 
     it("raised exception", function(done) {
-	fetch('/pgajax/tests@function_raising_exception.php')
-	    .then(statusOk)
-	    .then(getJson)
+	PgProc('tests', 'function_raising_exception')
 	    .then(elt => console.log(elt))
 	    .catch(error => {
 		if (error instanceof PgProcError) {
@@ -109,5 +64,79 @@ describe("PgProc", function() {
 		} else {
 		}
 	    });
+    });
+
+    it("incremented integer", function(done) {
+	PgProc('tests', 'test_returns_incremented_integer', { 'n': 4 })
+	    .then(val => {
+		expect(val).toEqual(5)
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    it("incremented numeric", function(done) {
+	PgProc('tests', 'test_returns_incremented_numeric', { 'n': 4 })
+	    .then(val => {
+		expect(val).toEqual(5.5)
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    it("incremented real", function(done) {
+	PgProc('tests', 'test_returns_incremented_real', { 'n': 4 })
+	    .then(val => {
+		expect(val).toEqual(5.42)
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    it("cat string", function(done) {
+	PgProc('tests', 'test_returns_cat_string', { 's': 'hello' })
+	    .then(val => {
+		expect(val).toEqual('hello.')
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    it("same bool true", function(done) {
+	PgProc('tests', 'test_returns_same_bool', { 'b': true })
+	    .then(val => {
+		expect(val).toBe(true)
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    it("same bool false", function(done) {
+	PgProc('tests', 'test_returns_same_bool', { 'b': false })
+	    .then(val => {
+		expect(val).toBe(false)
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    it("integer array as arg", function(done) {
+	var list = [1, 2, 3, 4]
+	PgProc('tests', 'test_integer_array_arg', { 'list': list })
+	    .then(val => {
+		expect(val).toEqual(list)
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    it("varchar array as arg", function(done) {
+	var list = ['a', 'b', 'c']
+	PgProc('tests', 'test_varchar_array_arg', { 'list': list })
+	    .then(val => {
+		expect(val).toEqual(list)
+		done();
+	    })
+	    .catch(error => console.log(error));		  
     });
 });

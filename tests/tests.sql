@@ -127,13 +127,13 @@ LANGUAGE PLPGSQL
 IMMUTABLE
 AS $$
 BEGIN
-  RAISE EXCEPTION 'an exception';
+  RAISE EXCEPTION '"a particular exception message"';
   SELECT true;
 END;
 $$;
 
 -- test arguments
-CREATE OR REPLACE FUNCTION tests.test_returns_incremented_integer(integer)
+CREATE OR REPLACE FUNCTION tests.test_returns_incremented_integer(n integer)
 RETURNS integer
 LANGUAGE SQL
 IMMUTABLE
@@ -141,7 +141,7 @@ AS $$
   SELECT $1 + 1;
 $$;
 
-CREATE OR REPLACE FUNCTION tests.test_returns_incremented_numeric(numeric)
+CREATE OR REPLACE FUNCTION tests.test_returns_incremented_numeric(n numeric)
 RETURNS numeric
 LANGUAGE SQL
 IMMUTABLE
@@ -149,7 +149,7 @@ AS $$
   SELECT $1 + 1.5;
 $$;
 
-CREATE OR REPLACE FUNCTION tests.test_returns_incremented_real(real)
+CREATE OR REPLACE FUNCTION tests.test_returns_incremented_real(n real)
 RETURNS real
 LANGUAGE SQL
 IMMUTABLE
@@ -157,7 +157,7 @@ AS $$
   SELECT ($1 + 1.42)::real;
 $$;
 
-CREATE OR REPLACE FUNCTION tests.test_returns_cat_string(varchar)
+CREATE OR REPLACE FUNCTION tests.test_returns_cat_string(s varchar)
 RETURNS varchar
 LANGUAGE SQL
 IMMUTABLE
@@ -165,7 +165,7 @@ AS $$
   SELECT $1 || '.';
 $$;
 
-CREATE OR REPLACE FUNCTION tests.test_returns_same_bool(boolean)
+CREATE OR REPLACE FUNCTION tests.test_returns_same_bool(b boolean)
 RETURNS boolean
 LANGUAGE SQL
 IMMUTABLE
@@ -173,7 +173,7 @@ AS $$
   SELECT $1;
 $$;
 
-CREATE OR REPLACE FUNCTION tests.test_returns_same_date(date)
+CREATE OR REPLACE FUNCTION tests.test_returns_same_date(d date)
 RETURNS date
 LANGUAGE SQL
 IMMUTABLE
@@ -181,7 +181,7 @@ AS $$
   SELECT $1;
 $$;
 
-CREATE OR REPLACE FUNCTION tests.test_returns_same_timestamp(timestamp)
+CREATE OR REPLACE FUNCTION tests.test_returns_same_timestamp(t timestamp)
 RETURNS timestamp
 LANGUAGE SQL
 IMMUTABLE
@@ -189,7 +189,7 @@ AS $$
   SELECT $1;
 $$;
 
-CREATE OR REPLACE FUNCTION tests.test_returns_same_time(time)
+CREATE OR REPLACE FUNCTION tests.test_returns_same_time(t time)
 RETURNS time
 LANGUAGE SQL
 IMMUTABLE
