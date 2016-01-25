@@ -34,7 +34,7 @@ function PgProc($schema, $procedure, $args) {
     
     return new Promise(
 	function(resolve, reject) {
-	    fetch("/pgajax/"+$schema+"@"+$procedure+".php", {
+	    fetch("/pgproc/"+$schema+"@"+$procedure+".php", {
 		method: 'post',
 		body: JSON.stringify($args)
 	    })

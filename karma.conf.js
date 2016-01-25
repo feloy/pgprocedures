@@ -15,7 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'htdocs/pgajax/pgajax.js', '**/spec/*.spec.js'
+      'htdocs/pgproc/pgajax.js', '**/spec/*.spec.js'
     ],
 
 
@@ -41,7 +41,7 @@ module.exports = function(config) {
 
     // Proxies
     proxies: {
-	'/pgajax': 'http://localhost:80/pgajax'
+	'/pgproc': 'http://localhost:80/pgproc'
     },
 
     // enable / disable colors in the output (reporters and logs)
