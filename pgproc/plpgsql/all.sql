@@ -16,10 +16,8 @@
 --     You should have received a copy of the GNU General Public License
 --     along with pgprocedures.  If not, see <http://www.gnu.org/licenses/>.
 
-BEGIN TRANSACTION;
-
-DROP FUNCTION pgprocedures.search_function(prm_schema character varying, prm_method character varying, prm_nargs integer);
-DROP TYPE pgprocedures.search_function;
+DROP FUNCTION IF EXISTS pgprocedures.search_function(prm_schema character varying, prm_method character varying, prm_nargs integer);
+DROP TYPE IF EXISTS pgprocedures.search_function;
 
 CREATE TYPE pgprocedures.search_function AS (
        	proc_nspname name,
@@ -57,8 +55,8 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-DROP FUNCTION pgprocedures.search_arguments(prm_schema character varying, prm_function character varying);
-DROP TYPE pgprocedures.search_arguments;
+DROP FUNCTION IF EXISTS pgprocedures.search_arguments(prm_schema character varying, prm_function character varying);
+DROP TYPE IF EXISTS pgprocedures.search_arguments;
 CREATE TYPE pgprocedures.search_arguments AS (
     argnames varchar[],
     argtypes oidvector
@@ -82,5 +80,3 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql;
-
-COMMIT;
