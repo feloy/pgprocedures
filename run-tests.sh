@@ -1,2 +1,5 @@
-(cd tests && ./phpunit .) || echo '********** ERROR **********'
-karma start || echo '********** ERROR **********'
+echo '====================== PgProc PHPUNIT ========================'
+(cd tests && ./phpunit .) || exit 1
+echo '====================== PgProc JASMINE ========================'
+karma start || exit 1
+echo '=========================== OK ==============================='
