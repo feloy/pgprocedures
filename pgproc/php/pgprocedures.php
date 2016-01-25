@@ -94,9 +94,9 @@ This class can be used to easily call PostgreSQL stored procedures from your PHP
 */
 
 
-require_once 'PgProcException.class.php';
-require_once 'PgProcFunctionNotAvailableException.class.php';
-require_once 'PgSchema.class.php';
-require_once 'PgProcedures2.class.php';
+require_once (dirname(__FILE__) . '/PgProcException.class.php');
+require_once (dirname(__FILE__) . '/PgProcFunctionNotAvailableException.class.php');
+require_once (dirname(__FILE__) . '/PgSchema.class.php');
+require_once (dirname(__FILE__) . '/PgProcedures2.class.php');
 
 ?>

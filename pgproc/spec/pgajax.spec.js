@@ -1,7 +1,7 @@
 /* TESTS */
 describe("PgProc", function() {
     it("returns integer", function(done) {
-	PgProc('tests', 'test_returns_integer')
+	PgProc('pgtests', 'test_returns_integer')
 	    .then(data => {		
 		expect(data).toBe(42);
 		done();
@@ -9,7 +9,7 @@ describe("PgProc", function() {
     });
 
     it("returns integer as string", function(done) {
-	PgProc('tests', 'test_returns_integer_as_string')
+	PgProc('pgtests', 'test_returns_integer_as_string')
 	    .then(data => {
 		expect(data).toBe('42');
 		done();
@@ -17,7 +17,7 @@ describe("PgProc", function() {
     });
 
     it("returns date", function(done) {
-	PgProc('tests', 'test_returns_date')
+	PgProc('pgtests', 'test_returns_date')
 	    .then(data => {
 		expect(data).toMatch(/^\d{2}\/\d{2}\/\d{4}$/);
 		done();
@@ -25,7 +25,7 @@ describe("PgProc", function() {
     });
 
     it("returns composite", function(done) {
-	PgProc('tests', 'test_returns_composite')
+	PgProc('pgtests', 'test_returns_composite')
 	    .then(elt => {
 		expect(elt).toEqual({a: 1, b: "hello"});
 		done();
@@ -34,7 +34,7 @@ describe("PgProc", function() {
     });
 
     it("returns setof composite", function(done) {
-	PgProc('tests', 'test_returns_setof_composite')
+	PgProc('pgtests', 'test_returns_setof_composite')
 	    .then(function(data) {
 		expect(data).toEqual([{a: 1, b: 'hello'}, {a: 2, b: 'bye'}]);
 		done();
@@ -44,7 +44,7 @@ describe("PgProc", function() {
     });
 
     it("not found exception", function(done) {
-	PgProc('tests', 'not_found_function')
+	PgProc('pgtests', 'not_found_function')
 	    .then(elt => console.log(elt))
 	    .catch(error => {
 		if (error instanceof PgProcFunctionNotAvailableError) {
@@ -56,7 +56,7 @@ describe("PgProc", function() {
 	});
 
     it("raised exception", function(done) {
-	PgProc('tests', 'function_raising_exception')
+	PgProc('pgtests', 'function_raising_exception')
 	    .then(elt => console.log(elt))
 	    .catch(error => {
 		if (error instanceof PgProcError) {
@@ -67,7 +67,7 @@ describe("PgProc", function() {
     });
 
     it("incremented integer", function(done) {
-	PgProc('tests', 'test_returns_incremented_integer', { 'n': 4 })
+	PgProc('pgtests', 'test_returns_incremented_integer', { 'n': 4 })
 	    .then(val => {
 		expect(val).toEqual(5)
 		done();
@@ -76,7 +76,7 @@ describe("PgProc", function() {
     });
 
     it("incremented numeric", function(done) {
-	PgProc('tests', 'test_returns_incremented_numeric', { 'n': 4 })
+	PgProc('pgtests', 'test_returns_incremented_numeric', { 'n': 4 })
 	    .then(val => {
 		expect(val).toEqual(5.5)
 		done();
@@ -85,7 +85,7 @@ describe("PgProc", function() {
     });
 
     it("incremented real", function(done) {
-	PgProc('tests', 'test_returns_incremented_real', { 'n': 4 })
+	PgProc('pgtests', 'test_returns_incremented_real', { 'n': 4 })
 	    .then(val => {
 		expect(val).toEqual(5.42)
 		done();
@@ -94,7 +94,7 @@ describe("PgProc", function() {
     });
 
     it("cat string", function(done) {
-	PgProc('tests', 'test_returns_cat_string', { 's': 'hello' })
+	PgProc('pgtests', 'test_returns_cat_string', { 's': 'hello' })
 	    .then(val => {
 		expect(val).toEqual('hello.')
 		done();
@@ -103,7 +103,7 @@ describe("PgProc", function() {
     });
 
     it("same bool true", function(done) {
-	PgProc('tests', 'test_returns_same_bool', { 'b': true })
+	PgProc('pgtests', 'test_returns_same_bool', { 'b': true })
 	    .then(val => {
 		expect(val).toBe(true)
 		done();
@@ -112,7 +112,7 @@ describe("PgProc", function() {
     });
 
     it("same bool false", function(done) {
-	PgProc('tests', 'test_returns_same_bool', { 'b': false })
+	PgProc('pgtests', 'test_returns_same_bool', { 'b': false })
 	    .then(val => {
 		expect(val).toBe(false)
 		done();
@@ -122,7 +122,7 @@ describe("PgProc", function() {
 
     it("integer array as arg", function(done) {
 	var list = [1, 2, 3, 4]
-	PgProc('tests', 'test_integer_array_arg', { 'list': list })
+	PgProc('pgtests', 'test_integer_array_arg', { 'list': list })
 	    .then(val => {
 		expect(val).toEqual(list)
 		done();
@@ -132,7 +132,7 @@ describe("PgProc", function() {
 
     it("varchar array as arg", function(done) {
 	var list = ['a', 'b', 'c']
-	PgProc('tests', 'test_varchar_array_arg', { 'list': list })
+	PgProc('pgtests', 'test_varchar_array_arg', { 'list': list })
 	    .then(val => {
 		expect(val).toEqual(list)
 		done();
@@ -143,7 +143,7 @@ describe("PgProc", function() {
     /* count */
     it("count", function(done) {
 	var list = ['a', 'b', 'c']
-	PgProc('tests', 'test_varchar_array_arg', { 'list': list, '_count': true })
+	PgProc('pgtests', 'test_varchar_array_arg', { 'list': list, '_count': true })
 	    .then(val => {
 		expect(val).toEqual(list.length)
 		done();
@@ -154,7 +154,7 @@ describe("PgProc", function() {
     /* order */
     it("order", function(done) {
 	var list = [1, 3, 2, 4]
-	PgProc('tests', 'test_integer_array_arg', { 'list': list, _order: 'test_integer_array_arg' })
+	PgProc('pgtests', 'test_integer_array_arg', { 'list': list, _order: 'test_integer_array_arg' })
 	    .then(val => {
 		expect(val).toEqual([1, 2, 3, 4])
 		done();
@@ -165,7 +165,7 @@ describe("PgProc", function() {
     /* order desc */
     it("order desc", function(done) {
 	var list = [1, 3, 2, 4]
-	PgProc('tests', 'test_integer_array_arg', { 'list': list, _order: { col: 'test_integer_array_arg', order: 'desc'} })
+	PgProc('pgtests', 'test_integer_array_arg', { 'list': list, _order: { col: 'test_integer_array_arg', order: 'desc'} })
 	    .then(val => {
 		expect(val).toEqual([4, 3, 2, 1])
 		done();
@@ -176,7 +176,7 @@ describe("PgProc", function() {
     /* limit */
     it("limit", function(done) {
 	var list = [1, 3, 2, 4]
-	PgProc('tests', 'test_integer_array_arg', { 'list': list, _limit: 2 })
+	PgProc('pgtests', 'test_integer_array_arg', { 'list': list, _limit: 2 })
 	    .then(val => {
 		expect(val).toEqual([1, 3])
 		done();
@@ -187,7 +187,7 @@ describe("PgProc", function() {
     /* limit / offset */
     it("limit", function(done) {
 	var list = [1, 3, 2, 4]
-	PgProc('tests', 'test_integer_array_arg', { 'list': list, _limit: { limit: 2, offset: 1} })
+	PgProc('pgtests', 'test_integer_array_arg', { 'list': list, _limit: { limit: 2, offset: 1} })
 	    .then(val => {
 		expect(val).toEqual([3, 2])
 		done();
@@ -198,7 +198,7 @@ describe("PgProc", function() {
     /* distinct / order */
     it("limit", function(done) {
 	var list = [1, 3, 2, 3, 4]
-	PgProc('tests', 'test_integer_array_arg', { 'list': list, _distinct: true, _order: 'test_integer_array_arg' })
+	PgProc('pgtests', 'test_integer_array_arg', { 'list': list, _distinct: true, _order: 'test_integer_array_arg' })
 	    .then(val => {
 		expect(val).toEqual([1, 2, 3, 4])
 		done();

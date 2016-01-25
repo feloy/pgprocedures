@@ -1,4 +1,3 @@
-BEGIN TRANSACTION;
 --  Copyright © 2014 ELOL
 --    Written by Philippe Martin (contact@elol.fr)
 -- --------------------------------------------------------------------------------
@@ -17,7 +16,10 @@ BEGIN TRANSACTION;
 --     You should have received a copy of the GNU General Public License
 --     along with pgprocedures.  If not, see <http://www.gnu.org/licenses/>.
 
-CREATE SCHEMA pgprocedures;
+BEGIN TRANSACTION;
+
+DROP FUNCTION pgprocedures.search_function(prm_schema character varying, prm_method character varying, prm_nargs integer);
+DROP TYPE pgprocedures.search_function;
 
 CREATE TYPE pgprocedures.search_function AS (
        	proc_nspname name,
@@ -54,6 +56,9 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
+
+DROP FUNCTION pgprocedures.search_arguments(prm_schema character varying, prm_function character varying);
+DROP TYPE pgprocedures.search_arguments;
 CREATE TYPE pgprocedures.search_arguments AS (
     argnames varchar[],
     argtypes oidvector

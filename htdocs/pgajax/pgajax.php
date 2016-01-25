@@ -1,5 +1,5 @@
 <?php
-require '../../pgprocedures.php';
+require '../../pgproc/php/pgprocedures.php';
 require_once ('../../config.inc.php');
 $base = new PgProcedures2 ($pg_host, $pg_user, $pg_pass, $pg_database);
 
