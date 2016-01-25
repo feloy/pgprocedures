@@ -139,4 +139,71 @@ describe("PgProc", function() {
 	    })
 	    .catch(error => console.log(error));		  
     });
+
+    /* count */
+    it("count", function(done) {
+	var list = ['a', 'b', 'c']
+	PgProc('tests', 'test_varchar_array_arg', { 'list': list, '_count': true })
+	    .then(val => {
+		expect(val).toEqual(list.length)
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    /* order */
+    it("order", function(done) {
+	var list = [1, 3, 2, 4]
+	PgProc('tests', 'test_integer_array_arg', { 'list': list, _order: 'test_integer_array_arg' })
+	    .then(val => {
+		expect(val).toEqual([1, 2, 3, 4])
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    /* order desc */
+    it("order desc", function(done) {
+	var list = [1, 3, 2, 4]
+	PgProc('tests', 'test_integer_array_arg', { 'list': list, _order: { col: 'test_integer_array_arg', order: 'desc'} })
+	    .then(val => {
+		expect(val).toEqual([4, 3, 2, 1])
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    /* limit */
+    it("limit", function(done) {
+	var list = [1, 3, 2, 4]
+	PgProc('tests', 'test_integer_array_arg', { 'list': list, _limit: 2 })
+	    .then(val => {
+		expect(val).toEqual([1, 3])
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    /* limit / offset */
+    it("limit", function(done) {
+	var list = [1, 3, 2, 4]
+	PgProc('tests', 'test_integer_array_arg', { 'list': list, _limit: { limit: 2, offset: 1} })
+	    .then(val => {
+		expect(val).toEqual([3, 2])
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+
+    /* distinct / order */
+    it("limit", function(done) {
+	var list = [1, 3, 2, 3, 4]
+	PgProc('tests', 'test_integer_array_arg', { 'list': list, _distinct: true, _order: 'test_integer_array_arg' })
+	    .then(val => {
+		expect(val).toEqual([1, 2, 3, 4])
+		done();
+	    })
+	    .catch(error => console.log(error));		  
+    });
+    
 });

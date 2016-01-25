@@ -47,6 +47,27 @@ if ($all) {
   }
 }
 
+if (isset($body->_count) && $body->_count === true)
+  $args[] = $base->count();
+
+if (isset($body->_order)) {
+  if (is_object($body->_order))
+    $args[] = $base->order($body->_order->col, strtoupper($body->_order->order));
+  else
+    $args[] = $base->order($body->_order);
+}
+
+if (isset($body->_limit)) {
+  if (is_object($body->_limit))
+    $args[] = $base->limit($body->_limit->limit, $body->_limit->offset);
+  else
+    $args[] = $base->limit($body->_limit);
+}
+
+if (isset($body->_distinct)) {
+  $args[] = $base->distinct();
+}
+
 try {
   $results = $base->$schema->__call ($function, $args);
 } catch (PgProcFunctionNotAvailableException $e) {
